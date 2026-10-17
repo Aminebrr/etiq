@@ -1,0 +1,1238 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Etiq</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Etiq tells marketing and comms teams whether a piece of content needs an AI label under the EU AI Act, and prints the wording to use. English and French.">
+<meta name="author" content="Amine Brahimi">
+<link rel="canonical" href="https://aminebrr.github.io/etiq/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Etiq">
+<meta property="og:title" content="Etiq: does your content need an AI label?">
+<meta property="og:description" content="Five questions or fewer, a verdict under EU AI Act Article 50, and label wording to paste in English and French. Built by Amine Brahimi.">
+<meta property="og:url" content="https://aminebrr.github.io/etiq/">
+<meta property="og:image" content="https://aminebrr.github.io/etiq/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+<meta property="og:image:alt" content="A thermal baggage tag printed with LBL and Label required, next to the question Does it need an AI label?">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Etiq: does your content need an AI label?">
+<meta name="twitter:description" content="A verdict under EU AI Act Article 50 and label wording in English and French.">
+<meta name="twitter:image" content="https://aminebrr.github.io/etiq/og-image.png">
+<link rel="icon" id="favicon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='14' y='8' width='36' height='50' rx='7' fill='%23121314'/%3E%3Crect x='20' y='22' width='24' height='28' rx='3' fill='%23ffd21f'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Libre+Barcode+128+Text&family=Martian+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Airport baggage hall: thermal paper, thermal black, one yellow sign field; verdicts in ISO 3864 safety colours. */
+:root {
+  --paper: #eff0ec;
+  --paper-2: #e2e4de;
+  --paper-3: #d3d6ce;
+  --ink: #121314;
+  --ink-2: #474b4f;
+  --sign: #ffd21f;
+  --sign-ink: #121314;
+  --board: #17191b;
+  --board-2: #232629;
+  --board-ink: #f2efe6;
+  --board-amber: #ffbf2e;
+  --req: #1849c6;
+  --req-ink: #ffffff;
+  --doc: #e8a200;
+  --doc-ink: #121314;
+  --clear: #11804e;
+  --clear-ink: #ffffff;
+  --out: #6f7377;
+  --out-ink: #ffffff;
+
+  --display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --text: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --data: "Martian Mono", ui-monospace, Menlo, Consolas, monospace;
+  --bars: "Libre Barcode 128 Text", var(--data);
+
+  --step-xs: 0.8125rem;
+  --step-s: 0.9375rem;
+  --step-b: clamp(1.0625rem, 1rem + 0.2vw, 1.1875rem);
+  --step-l: clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem);
+  --step-h: clamp(2.25rem, 1.4rem + 3vw, 4.25rem);
+  --step-hero: clamp(3rem, 1.6rem + 4.6vw, 6rem);
+
+  --margin: clamp(16px, 3vw, 40px);
+  --max: 1380px;
+  --nav-h: 60px;
+  --gap-section: clamp(96px, 11vw, 176px);
+  --radius: 10px;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 16px); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--paper); color: var(--ink);
+  font-family: var(--text); font-size: var(--step-b); line-height: 1.5;
+  overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  scrollbar-color: var(--ink) var(--paper-2);
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--sign); }
+h1, h2, h3, h4 { margin: 0; font-family: var(--display); font-weight: 700; text-wrap: balance; }
+p { margin: 0; }
+a { color: inherit; text-underline-offset: 4px; text-decoration-thickness: 1.5px; }
+button { font: inherit; color: inherit; }
+::selection { background: var(--sign); color: var(--ink); }
+:focus-visible { outline: 3px solid var(--req); outline-offset: 3px; }
+.data { font-family: var(--data); font-size: var(--step-xs); letter-spacing: 0.02em; font-variant-numeric: tabular-nums; }
+.wrap {
+  max-width: calc(var(--max) + 2 * var(--margin)); margin-inline: auto;
+  padding-left: max(var(--margin), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--margin), env(safe-area-inset-right, 0px));
+}
+.icon { width: 1.1em; height: 1.1em; flex: none; }
+
+/* ticket die-cut: a notch on each side */
+.notch {
+  -webkit-mask: radial-gradient(circle 8px at 0 50%, #0000 97%, #000) left / 51% 100% no-repeat, radial-gradient(circle 8px at 100% 50%, #0000 97%, #000) right / 51% 100% no-repeat;
+          mask: radial-gradient(circle 8px at 0 50%, #0000 97%, #000) left / 51% 100% no-repeat, radial-gradient(circle 8px at 100% 50%, #0000 97%, #000) right / 51% 100% no-repeat;
+}
+
+/* ---------- sign-strip navigation ---------- */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--sign); color: var(--sign-ink); }
+.nav .wrap { display: flex; align-items: center; gap: clamp(16px, 2.4vw, 36px); height: var(--nav-h); }
+.brand { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; margin-right: auto; }
+.brand-mark { width: 46px; height: 46px; display: block; }
+.brand-mark canvas { width: 100%; height: 100%; display: block; }
+.brand-word { font-family: var(--display); font-stretch: 118%; font-weight: 800; font-size: 1.5rem; letter-spacing: -0.02em; line-height: 1; }
+.nav-links { display: flex; gap: clamp(14px, 2vw, 28px); }
+.nav-links a { display: inline-flex; align-items: center; gap: 7px; text-decoration: none; font-weight: 600; font-size: var(--step-s); font-stretch: 108%; padding-block: 8px; }
+.nav-links .icon { transition: transform .2s cubic-bezier(.2,.8,.2,1); }
+.nav-links a:hover .icon { transform: translateX(3px); }
+.lang {
+  border: 0; cursor: pointer; background: var(--ink); color: var(--sign);
+  font-family: var(--display); font-weight: 700; font-stretch: 115%; font-size: var(--step-s);
+  height: 38px; padding: 0 14px; border-radius: 6px; transition: transform .15s ease;
+}
+.lang:hover { transform: translateY(-1px); }
+.lang:active { transform: translateY(1px); }
+.lang:focus-visible { outline-color: var(--ink); }
+@media (max-width: 820px) { .nav-links { display: none; } }
+
+/* ---------- hero + checker ---------- */
+.hall { padding-block: clamp(36px, 5vw, 72px) 0; }
+.hall-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(28px, 4vw, 72px); align-items: start; }
+.hero-title { font-size: var(--step-hero); font-stretch: 112%; line-height: .92; letter-spacing: -0.035em; max-width: 11ch; }
+.hero-lead { font-size: var(--step-l); line-height: 1.35; max-width: 38ch; margin-top: 24px; }
+.hero-meta { display: flex; gap: 10px 22px; flex-wrap: wrap; margin-top: 22px; color: var(--ink-2); }
+.hero-meta span { display: inline-flex; align-items: center; gap: 8px; }
+
+.route { margin-top: clamp(40px, 5vw, 64px); display: grid; }
+.leg { position: relative; display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 0 18px; padding-bottom: 34px; }
+.leg::before { content: ""; position: absolute; left: 27px; top: 44px; bottom: 0; width: 2px; background: repeating-linear-gradient(to bottom, var(--ink) 0 6px, transparent 6px 12px); }
+.leg:last-child::before { display: none; }
+.leg-code {
+  width: 56px; height: 44px; display: grid; place-items: center; border-radius: 8px;
+  background: var(--paper-2); color: var(--ink); font-family: var(--data); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.04em;
+  transition: background-color .25s ease, color .25s ease;
+}
+.leg.done .leg-code { background: var(--ink); color: var(--sign); }
+.leg h3 { font-size: var(--step-l); font-stretch: 104%; font-weight: 600; line-height: 1.2; letter-spacing: -0.015em; padding-top: 8px; max-width: 32ch; }
+.opts { grid-column: 2; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 8px; margin-top: 16px; }
+.leg.enter { animation: legIn .5s cubic-bezier(.16,1,.3,1) both; }
+.opt {
+  display: grid; gap: 3px; align-content: start; text-align: left; border: 0; cursor: pointer;
+  background: #fff; color: var(--ink); border-radius: 8px;
+  padding: 16px 22px; min-height: 62px;
+  transition: background-color .18s ease, color .18s ease, transform .18s cubic-bezier(.2,.8,.2,1);
+}
+.opt:hover { background: var(--paper-3); }
+.opt:active { transform: scale(.98); }
+.opt:focus-visible { outline: none; box-shadow: inset 0 0 0 3px var(--req); }
+.opt[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.opt-title { font-weight: 600; font-size: 1.0625rem; line-height: 1.25; }
+.opt-hint { font-size: var(--step-xs); line-height: 1.4; color: var(--ink-2); }
+.opt[aria-pressed="true"] .opt-hint { color: #c9ccc6; }
+.route-tools { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin: 6px 0 0 74px; }
+.ghost {
+  display: inline-flex; align-items: center; gap: 8px; border: 0; cursor: pointer; background: var(--paper-2); color: var(--ink);
+  font-weight: 600; font-size: var(--step-s); height: 42px; padding: 0 16px; border-radius: 8px; transition: background-color .15s ease;
+}
+.ghost:hover { background: var(--paper-3); }
+.example-flag { color: var(--ink-2); max-width: 52ch; }
+
+/* the stage with the 3D tag */
+.stage { position: sticky; top: calc(var(--nav-h) + env(safe-area-inset-top, 0px)); height: calc(100vh - var(--nav-h)); min-height: 560px; max-height: 920px; }
+.stage-canvas { position: absolute; inset: 0; }
+.stage-canvas canvas { width: 100%; height: 100%; display: block; cursor: grab; touch-action: pan-y; }
+.stage-canvas canvas:active { cursor: grabbing; }
+.stage-fallback { position: absolute; inset: 10% 16% 12%; background: #fff; border-radius: 6px; padding: 28px; display: grid; align-content: start; gap: 12px; }
+.has-3d .stage-fallback { display: none; }
+.stage-note { position: absolute; left: 0; right: 0; bottom: 16px; color: var(--ink-2); display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+/* verdict, printed below the route */
+.verdict-wrap { margin-top: 18px; }
+.verdict { background: #fff; border-radius: var(--radius); overflow: hidden; }
+.verdict.print { animation: printIn .6s cubic-bezier(.16,1,.3,1); }
+.v-stripe { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 16px 28px; background: var(--out); color: var(--out-ink); }
+.verdict[data-sev="required"] .v-stripe, .verdict[data-sev="light"] .v-stripe { background-color: var(--req); color: var(--req-ink); }
+.verdict[data-sev="light"] .v-stripe { background-image: repeating-linear-gradient(135deg, rgba(255,255,255,.16) 0 10px, transparent 10px 20px); }
+.verdict[data-sev="document"] .v-stripe { background: var(--doc); color: var(--doc-ink); }
+.verdict[data-sev="none"] .v-stripe { background: var(--clear); color: var(--clear-ink); }
+.v-badge { font-family: var(--display); font-weight: 800; font-stretch: 120%; font-size: 1.125rem; letter-spacing: 0.01em; text-transform: uppercase; }
+.v-body { padding: 26px 28px 30px; display: grid; gap: 18px; }
+.v-title { font-size: clamp(1.75rem, 1.2rem + 1.6vw, 2.5rem); font-stretch: 108%; line-height: 1.02; letter-spacing: -0.03em; }
+.v-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px 36px; }
+.v-sub { font-family: var(--display); font-weight: 700; font-stretch: 112%; font-size: var(--step-s); margin-bottom: 10px; }
+.v-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.v-list li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 10px; align-items: start; font-size: 1rem; }
+.v-list .icon { margin-top: 3px; }
+.word-row { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 10px 10px 14px; background: var(--paper); border-radius: 8px; }
+.word-row + .word-row { margin-top: 6px; }
+.word-text { font-weight: 600; overflow-wrap: anywhere; }
+.copy {
+  display: inline-flex; align-items: center; gap: 6px; border: 0; cursor: pointer; background: var(--ink); color: var(--paper);
+  font-size: var(--step-xs); font-weight: 600; height: 34px; padding: 0 12px; border-radius: 6px; transition: transform .15s ease, background-color .15s;
+}
+.copy .icon { width: 15px; height: 15px; }
+.copy:hover { transform: translateY(-1px); }
+.copy:active { transform: translateY(1px); }
+.copy.ok { background: var(--clear); color: #fff; }
+.v-foot { display: flex; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; align-items: baseline; padding-top: 16px; border-top: 2px dashed var(--paper-3); }
+.v-fine { font-size: var(--step-xs); color: var(--ink-2); max-width: 60ch; }
+.v-ref { font-size: var(--step-s); font-weight: 600; }
+.v-share { display: flex; align-items: center; gap: 12px 16px; flex-wrap: wrap; }
+.v-share .copy { height: 40px; padding: 0 14px; font-size: var(--step-s); }
+@media (max-width: 1080px) { .v-cols { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 900px) {
+  .hall-grid { grid-template-columns: minmax(0, 1fr); }
+  .hall-copy { display: contents; }
+  .hall-head { order: 1; }
+  .stage { order: 2; position: relative; top: 0; height: 100vw; min-height: 0; max-height: 620px; }
+  .stage-note { bottom: 4px; }
+  .hall-route { order: 3; }
+  .stage { order: 4; margin-top: 32px; }
+  .hero-title { font-size: clamp(2.375rem, 10.5vw, 3.25rem); }
+  .hero-lead { font-size: 1.0625rem; margin-top: 14px; }
+  .hero-meta { display: none; }
+  .route { margin-top: 28px; }
+  .leg { grid-template-columns: 48px minmax(0, 1fr); gap: 0 12px; }
+  .leg-code { width: 48px; }
+  .leg::before { left: 23px; }
+  .opts { grid-column: 1 / -1; }
+  .route-tools { margin-left: 0; }
+  .v-stripe, .v-body { padding-inline: 20px; }
+}
+
+/* phone-only route bar */
+.routebar { display: none; }
+@media (max-width: 900px) {
+  .routebar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 25; display: flex; align-items: center; gap: 12px;
+    background: var(--ink); color: var(--paper);
+    padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+    transform: translateY(110%); transition: transform .35s cubic-bezier(.16,1,.3,1);
+  }
+  .routebar.show { transform: none; }
+  .rb-codes { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #d6d8d2; }
+  .rb-dest { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; border-radius: 6px; padding: 8px 12px; background: var(--out); color: #fff; font-weight: 700; font-size: var(--step-xs); white-space: nowrap; }
+  .rb-dest b { font-family: var(--display); font-stretch: 125%; font-weight: 800; font-size: 1rem; }
+  .rb-dest[data-sev="required"], .rb-dest[data-sev="light"] { background: var(--req); }
+  .rb-dest[data-sev="document"] { background: var(--doc); color: var(--doc-ink); }
+  .rb-dest[data-sev="none"] { background: var(--clear); }
+}
+@media (max-width: 900px) and (prefers-reduced-motion: reduce) { .routebar { transition: none; } }
+
+/* ---------- departures board ---------- */
+.board-sec { margin-top: var(--gap-section); background: var(--board); color: var(--board-ink); padding-block: clamp(64px, 8vw, 120px); }
+.board-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; margin-bottom: clamp(32px, 4vw, 56px); }
+.board-head h2 { font-size: var(--step-h); font-stretch: 112%; line-height: .95; letter-spacing: -0.035em; }
+.board-head p { max-width: 44ch; color: #c9c6bd; }
+.board { overflow-x: auto; scrollbar-color: var(--board-amber) var(--board); }
+.board table { width: 100%; min-width: 760px; border-collapse: separate; border-spacing: 0 6px; }
+.board th { text-align: left; font-family: var(--data); font-weight: 400; font-size: 0.75rem; letter-spacing: 0.06em; color: #a9a69e; padding: 0 16px 8px; }
+.board td { background: var(--board-2); padding: 18px 16px; vertical-align: middle; transition: background-color .2s ease; }
+.board td:first-child { border-radius: 8px 0 0 8px; }
+.board td:last-child { border-radius: 0 8px 8px 0; }
+.board tbody tr:hover td { background: #2c3034; }
+.flaps { display: inline-flex; gap: 3px; font-family: var(--data); font-weight: 500; font-size: clamp(1rem, .8rem + .6vw, 1.375rem); color: var(--board-amber); }
+.flap { position: relative; display: inline-grid; place-items: center; width: 1.05em; height: 1.5em; background: #0e0f10; border-radius: 3px; }
+.flap::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: #000; opacity: .8; }
+.b-rule { font-weight: 600; font-size: 1.0625rem; }
+.b-detail { font-size: var(--step-s); color: #bcb9b0; margin-top: 4px; max-width: 52ch; }
+.b-art { font-family: var(--data); font-size: 0.8125rem; white-space: nowrap; }
+.b-status { display: inline-flex; align-items: center; gap: 8px; font-family: var(--display); font-weight: 800; font-stretch: 118%; font-size: 0.9375rem; letter-spacing: 0.02em; white-space: nowrap; padding: 7px 12px; border-radius: 6px; background: var(--req); color: var(--req-ink); }
+.b-status.doc { background: var(--doc); color: var(--doc-ink); }
+.b-status .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: blink 1.4s steps(2, start) infinite; }
+
+/* ---------- sticker sheet ---------- */
+.sheet-sec { padding-top: var(--gap-section); }
+.sec-head { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 20px var(--margin); align-items: end; margin-bottom: clamp(36px, 4vw, 56px); }
+.sec-head h2 { font-size: var(--step-h); font-stretch: 112%; line-height: .95; letter-spacing: -0.035em; }
+.sec-head p { max-width: 46ch; }
+.sheet { background: var(--paper-2); border-radius: 14px; padding: clamp(16px, 2.4vw, 32px); display: grid; gap: clamp(28px, 3vw, 40px); }
+.sheet-cat h3 { display: flex; align-items: baseline; gap: 12px; font-size: var(--step-l); font-stretch: 112%; letter-spacing: -0.015em; margin: 0 0 14px 4px; }
+.sheet-cat .count { font-family: var(--data); font-size: 0.75rem; font-weight: 400; color: var(--ink-2); }
+.stickers { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 12px; }
+.sticker {
+  position: relative; background: #fff; border-radius: 12px; padding: 20px 22px 18px; display: grid; gap: 8px; align-content: start;
+  transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s ease;
+}
+.sticker:hover { transform: translateY(-3px) rotate(-.4deg); box-shadow: 0 14px 24px -14px rgba(18,19,20,.35); }
+.sticker-phrase { font-family: var(--display); font-weight: 700; font-stretch: 106%; font-size: 1.25rem; line-height: 1.15; letter-spacing: -0.01em; }
+.sticker-other { color: var(--ink-2); }
+.sticker-note { display: flex; gap: 8px; align-items: start; font-size: var(--step-s); padding-top: 10px; margin-top: 4px; border-top: 2px dashed var(--paper-2); }
+.sticker-note .icon { margin-top: 2px; }
+.sticker-copy { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.sticker-copy .copy { background: var(--paper-2); color: var(--ink); }
+.sticker-copy .copy:hover { background: var(--paper-3); }
+.sticker-copy .copy.ok { background: var(--clear); color: #fff; }
+
+/* ---------- help desk ---------- */
+.desk { padding-top: var(--gap-section); }
+.desk-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--margin); align-items: start; }
+.desk-sign { position: sticky; top: calc(var(--nav-h) + 32px); display: grid; gap: 18px; }
+.desk-sign h2 { font-size: var(--step-h); font-stretch: 112%; line-height: .95; letter-spacing: -0.035em; display: flex; align-items: center; gap: 16px; }
+.info-pict { width: .9em; height: .9em; flex: none; }
+.desk-sign p { max-width: 32ch; color: var(--ink-2); }
+.faq-list { display: grid; gap: 8px; }
+.faq { background: #fff; border-radius: var(--radius); transition: background-color .2s ease, color .2s ease; }
+.faq[open] { background: var(--ink); color: var(--paper); }
+.faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 20px; min-height: 72px; padding: 18px 24px; font-weight: 600; font-size: 1.1875rem; line-height: 1.3; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary:focus-visible { outline: none; box-shadow: inset 0 0 0 3px var(--req); border-radius: var(--radius); }
+.faq summary .icon { transition: transform .3s cubic-bezier(.2,.8,.2,1); }
+.faq[open] summary .icon { transform: rotate(45deg); }
+.faq-a { padding: 0 24px 26px; max-width: 62ch; color: #d9dbd5; }
+@media (max-width: 860px) { .desk-grid, .sec-head { grid-template-columns: minmax(0, 1fr); } .desk-sign { position: static; } .faq summary { font-size: 1.0625rem; } }
+
+/* ---------- boarding pass credit ---------- */
+.pass-sec { padding-block: var(--gap-section); }
+.pass { display: grid; grid-template-columns: minmax(0, 1fr) 300px; background: #fff; border-radius: 16px; overflow: hidden; }
+.pass-main { --pp: clamp(24px, 3.5vw, 48px); padding: 0 var(--pp) var(--pp); display: grid; gap: 28px; align-content: start; }
+.pass-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; background: var(--ink); color: var(--paper); margin: 0 calc(-1 * var(--pp)); padding: 16px var(--pp); }
+.pass-top b { font-family: var(--display); font-stretch: 120%; font-weight: 800; letter-spacing: 0.02em; }
+.pass-title { font-size: clamp(2rem, 1.2rem + 2.6vw, 3.5rem); font-stretch: 110%; line-height: .98; letter-spacing: -0.035em; max-width: 16ch; }
+.pass-fields { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px 24px; }
+.field { display: grid; gap: 4px; align-content: start; min-width: 0; }
+.field .data { color: var(--ink-2); }
+.field b { font-weight: 600; font-size: 1.0625rem; line-height: 1.25; }
+.pass-text { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px 36px; }
+.pass-text h3 { font-size: 1.125rem; font-stretch: 108%; margin-bottom: 8px; }
+.pass-text p { font-size: 1rem; }
+.pass-stub { position: relative; background: var(--sign); padding: clamp(24px, 3vw, 40px) 28px; display: grid; align-content: space-between; gap: 24px; border-left: 3px dashed var(--ink); }
+.pass-stub .bars { font-family: var(--bars); font-size: 60px; line-height: 1; overflow: hidden; white-space: nowrap; }
+.stub-big { font-family: var(--display); font-weight: 800; font-stretch: 125%; font-size: 4.5rem; line-height: .9; letter-spacing: -0.02em; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; border: 0; cursor: pointer;
+  background: var(--ink); color: var(--paper); font-weight: 700; font-stretch: 108%; font-size: var(--step-b);
+  height: 54px; padding: 0 22px; border-radius: 8px; transition: transform .18s cubic-bezier(.2,.8,.2,1);
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(1px); }
+.btn .icon { transition: transform .2s ease; }
+.btn:hover .icon { transform: translateX(4px); }
+.btn:focus-visible { outline-color: var(--ink); }
+@media (max-width: 960px) {
+  .pass { grid-template-columns: minmax(0, 1fr); }
+  .pass-stub { border-left: 0; border-top: 3px dashed var(--ink); }
+  .pass-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pass-text { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---------- sign footer ---------- */
+.foot { background: var(--sign); color: var(--sign-ink); padding-block: clamp(48px, 6vw, 88px) 28px; }
+.foot-sign { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.foot-word { font-family: var(--display); font-weight: 800; font-stretch: 125%; font-size: clamp(5rem, 2rem + 16vw, 17rem); line-height: .8; letter-spacing: -0.045em; }
+.foot-arrow { width: clamp(80px, 14vw, 220px); height: auto; flex: none; }
+.foot-cols { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px 24px; margin-top: clamp(40px, 5vw, 72px); font-size: var(--step-s); }
+.foot-col { grid-column: span 3; display: grid; gap: 10px; align-content: start; }
+.foot-col.wide { grid-column: span 6; }
+.foot-col h4 { font-size: var(--step-s); font-stretch: 112%; }
+.foot-col a:hover { text-decoration-thickness: 3px; }
+.foot-last { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 48px; padding-top: 20px; border-top: 2px solid var(--ink); font-size: var(--step-s); }
+.foot :focus-visible { outline-color: var(--ink); }
+@media (max-width: 860px) { .foot-col, .foot-col.wide { grid-column: span 6; } }
+@media (max-width: 520px) { .foot-col, .foot-col.wide { grid-column: span 12; } }
+
+/* ---------- motion ---------- */
+@keyframes legIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes printIn { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes blink { to { visibility: hidden; } }
+@keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+.reveal.in > * { animation: rise .7s cubic-bezier(.16,1,.3,1) both; }
+.reveal.in > *:nth-child(2) { animation-delay: .08s; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+</style>
+</head><body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-arrow-r" viewBox="0 0 24 24"><path d="M4 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/></symbol>
+  <symbol id="i-arrow-d" viewBox="0 0 24 24"><path d="M12 4v14M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16" fill="none" stroke="currentColor" stroke-width="2.6"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M5 15V5a1 1 0 0 1 1-1h9" fill="none" stroke="currentColor" stroke-width="2.2"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.3 7-11.5A7 7 0 0 0 5 9.5C5 14.7 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="9.5" r="2.4" fill="currentColor"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><rect x="1" y="1" width="22" height="22" rx="4" fill="currentColor"/><circle cx="12" cy="6.6" r="1.8" fill="#eff0ec"/><path d="M9.5 10h3.6v8h2.2" fill="none" stroke="#eff0ec" stroke-width="2.6"/></symbol>
+  <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18M6 21h12M4 7h16M7 7l-3 7h6zM17 7l-3 7h6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="i-hand" viewBox="0 0 24 24"><path d="M8 13V6a1.5 1.5 0 0 1 3 0v5m0-6.5a1.5 1.5 0 0 1 3 0V11m0-4.5a1.5 1.5 0 0 1 3 0V12m0-3a1.5 1.5 0 0 1 3 0v5.5A7.5 7.5 0 0 1 12.5 22h-.4a6 6 0 0 1-4.9-2.5L4.3 15.4a1.6 1.6 0 0 1 2.4-2.1L8 14.6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#check" aria-label="Etiq">
+      <span class="brand-mark" id="logo3d" aria-hidden="true"></span>
+      <span class="brand-word">Etiq</span>
+    </a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#check"><svg class="icon" aria-hidden="true"><use href="#i-arrow-d"/></svg><span data-i18n="nav.check">Check</span></a>
+      <a href="#counts"><svg class="icon" aria-hidden="true"><use href="#i-arrow-r"/></svg><span data-i18n="nav.counts">What counts</span></a>
+      <a href="#wording"><svg class="icon" aria-hidden="true"><use href="#i-arrow-r"/></svg><span data-i18n="nav.wording">Wording</span></a>
+      <a href="#faq"><svg class="icon" aria-hidden="true"><use href="#i-arrow-r"/></svg><span data-i18n="nav.faq">Help desk</span></a>
+    </nav>
+    <button class="lang" id="lang-toggle" type="button" aria-label="Passer en français">FR</button>
+  </div>
+</header>
+
+<div class="routebar" id="routebar" aria-hidden="true">
+  <span class="rb-codes data" id="rb-codes"></span>
+  <a class="rb-dest" href="#result" id="rb-dest" tabindex="-1"><b id="rb-code">···</b><span id="rb-badge"></span></a>
+</div>
+
+<main>
+  <section class="hall" id="check" aria-labelledby="hero-title">
+    <div class="wrap hall-grid">
+      <div class="hall-copy">
+        <div class="hall-head">
+          <h1 class="hero-title" id="hero-title" data-i18n="hero.title">Does it need an AI label?</h1>
+          <p class="hero-lead" data-i18n="hero.lead">Since 2 August 2026, the EU AI Act requires deepfakes and some AI-written text to be labelled. Route your content through five questions or fewer. Etiq prints the verdict and the wording to paste.</p>
+          <div class="hero-meta data">
+            <span><svg class="icon" aria-hidden="true"><use href="#i-scale"/></svg><span data-i18n="hero.m1">AI Act, Article 50</span></span>
+            <span><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="hero.m2">English and French</span></span>
+            <span><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><span data-i18n="hero.m3">Free, no sign-up</span></span>
+          </div>
+        </div>
+        <div class="hall-route">
+          <div class="route" id="questions" aria-label="Questions"></div>
+          <div class="route-tools">
+            <button class="ghost" type="button" id="reset"><svg class="icon" aria-hidden="true"><use href="#i-arrow-r"/></svg><span data-i18n="check.reset">Start a new route</span></button>
+            <span class="example-flag data" id="example-flag"></span>
+          </div>
+          <div class="verdict-wrap" id="result" aria-live="polite"></div>
+        </div>
+      </div>
+      <aside class="stage" aria-hidden="true">
+        <div class="stage-fallback" id="stage-fallback"></div>
+        <div class="stage-canvas" id="tag-canvas"></div>
+        <p class="stage-note data"><svg class="icon"><use href="#i-hand"/></svg><span data-i18n="hero.hint">The tag reprints with every answer. Drag to turn it.</span></p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="board-sec" id="counts" aria-labelledby="counts-title">
+    <div class="wrap">
+      <div class="board-head reveal">
+        <h2 id="counts-title" data-i18n="counts.title">What counts</h2>
+        <p data-i18n="counts.intro">Five kinds of content, five rules. Each line names the article it comes from.</p>
+      </div>
+      <div class="board">
+        <table>
+          <thead><tr>
+            <th scope="col" data-i18n="board.type">CONTENT</th>
+            <th scope="col" data-i18n="board.rule">RULE</th>
+            <th scope="col" data-i18n="board.art">SOURCE</th>
+            <th scope="col" data-i18n="board.status">STATUS</th>
+          </tr></thead>
+          <tbody id="board-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="sheet-sec" id="wording" aria-labelledby="wording-title">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <h2 id="wording-title" data-i18n="wording.title">Label wording, ready to peel</h2>
+        <p data-i18n="wording.intro">Short, plain lines in English and French. Pick the one that matches what AI did, and put it where people will see it first.</p>
+      </div>
+      <div class="sheet" id="cats"></div>
+    </div>
+  </section>
+
+  <section class="desk" id="faq" aria-labelledby="faq-title">
+    <div class="wrap desk-grid">
+      <div class="desk-sign">
+        <h2 id="faq-title"><svg class="info-pict" aria-hidden="true"><use href="#i-info"/></svg><span data-i18n="faq.title">Help desk</span></h2>
+        <p data-i18n="faq.intro">The questions comms teams ask most often, answered from the official texts.</p>
+      </div>
+      <div class="faq-list" id="faq-list"></div>
+    </div>
+  </section>
+
+  <section class="pass-sec" aria-labelledby="about-title">
+    <div class="wrap">
+      <article class="pass">
+        <div class="pass-main">
+          <div class="pass-top"><b>ETIQ</b><span class="data" data-i18n="pass.kind">BOARDING PASS · BUILT BY</span></div>
+          <h2 class="pass-title" id="about-title" data-i18n="about.title">Built by a communicator, for comms teams</h2>
+          <div class="pass-fields">
+            <div class="field"><span class="data" data-i18n="pass.f1">PASSENGER</span><b>BRAHIMI / AMINE</b></div>
+            <div class="field"><span class="data" data-i18n="pass.f2">FROM</span><b data-i18n="pass.v2">Comms &amp; digital marketing</b></div>
+            <div class="field"><span class="data" data-i18n="pass.f3">VIA</span><b data-i18n="pass.v3">European governance</b></div>
+            <div class="field"><span class="data" data-i18n="pass.f4">TO</span><b data-i18n="pass.v4">AI Act, Article 50</b></div>
+          </div>
+          <div class="pass-text">
+            <div>
+              <h3 data-i18n="about.h1">Why this exists</h3>
+              <p data-i18n="about.p1">I'm Amine Brahimi. I work in communications and digital marketing, in France, Belgium and Morocco, and I studied European governance at Sciences Po and UCLouvain. The AI Act's labelling rules sit right where those two meet, so I turned them into something a team can use in two minutes.</p>
+            </div>
+            <div>
+              <h3 data-i18n="about.h2">How it stays accurate</h3>
+              <p data-i18n="about.p2">Each verdict points to the article it comes from. The logic follows the AI Act, the Commission's Article 50 guidelines and the Code of Practice published on 10 June 2026. Last checked on 17 October 2026.</p>
+            </div>
+          </div>
+        </div>
+        <div class="pass-stub">
+          <div>
+            <span class="data" data-i18n="pass.gate">GATE</span>
+            <div class="stub-big">50</div>
+          </div>
+          <div class="bars" aria-hidden="true">ETIQ-AB-050</div>
+          <a class="btn" href="https://aminebrr.github.io/Portfolio/" target="_blank" rel="noopener"><span data-i18n="about.cta">See my portfolio</span><svg class="icon" aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-sign">
+      <span class="foot-word">Etiq</span>
+      <svg class="foot-arrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow-r"/></svg>
+    </div>
+    <div class="foot-cols">
+      <div class="foot-col wide">
+        <h4 data-i18n="foot.sources">Sources</h4>
+        <a href="https://ai-act-service-desk.ec.europa.eu/en/ai-act/article-50" target="_blank" rel="noopener" data-i18n="foot.s1">AI Act, Article 50 (AI Act Service Desk)</a>
+        <a href="https://digital-strategy.ec.europa.eu/en/policies/guidelines-ai-transparency-obligations" target="_blank" rel="noopener" data-i18n="foot.s2">Commission guidelines on Article 50</a>
+        <a href="https://digital-strategy.ec.europa.eu/en/news/commission-publishes-code-practice-marking-and-labelling-ai-generated-content" target="_blank" rel="noopener" data-i18n="foot.s3">Code of Practice on AI-generated content (10 June 2026)</a>
+        <a href="https://digital-strategy.ec.europa.eu/en/factpages/quick-facts-transparency-rules-ai-systems" target="_blank" rel="noopener" data-i18n="foot.s4">Quick facts: transparency rules for AI systems</a>
+        <a href="https://artificialintelligenceact.eu/article/99/" target="_blank" rel="noopener" data-i18n="foot.s5">AI Act, Article 99 (penalties)</a>
+      </div>
+      <div class="foot-col">
+        <h4 data-i18n="foot.page">On this page</h4>
+        <a href="#check" data-i18n="nav.check">Check</a>
+        <a href="#counts" data-i18n="nav.counts">What counts</a>
+        <a href="#wording" data-i18n="nav.wording">Wording</a>
+        <a href="#faq" data-i18n="nav.faq">Help desk</a>
+      </div>
+      <div class="foot-col">
+        <h4 data-i18n="foot.by">Built by</h4>
+        <span>Amine Brahimi</span>
+        <a href="https://aminebrr.github.io/Portfolio/" target="_blank" rel="noopener">aminebrr.github.io/Portfolio</a>
+        <span data-i18n="foot.checked">Checked against official texts on 17 October 2026</span>
+      </div>
+    </div>
+    <div class="foot-last">
+      <span data-i18n="foot.legal">© 2026 Amine Brahimi. A guide, not legal advice.</span>
+      <a href="#check" data-i18n="foot.back">Back to the check</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+var NB = " ";
+var T = {
+  en: {
+    "nav.check": "Check", "nav.counts": "What counts", "nav.wording": "Wording", "nav.faq": "Help desk",
+    "hero.title": "Does it need an AI label?",
+    "hero.lead": "Since 2 August 2026, the EU AI Act requires deepfakes and some AI-written text to be labelled. Route your content through five questions or fewer. Etiq prints the verdict and the wording to paste.",
+    "hero.m1": "AI Act, Article 50", "hero.m2": "English and French", "hero.m3": "Free, no sign-up",
+    "hero.hint": "The tag reprints with every answer. Drag to turn it.",
+    "check.reset": "Start a new route", "check.example": "Example route: an ad photo where AI changed a real model's face",
+    "counts.title": "What counts", "counts.intro": "Five kinds of content, five rules. Each line names the article it comes from.",
+    "board.type": "CONTENT", "board.rule": "RULE", "board.art": "SOURCE", "board.status": "STATUS",
+    "wording.title": "Label wording, ready to peel",
+    "wording.intro": "Short, plain lines in English and French. Pick the one that matches what AI did, and put it where people will see it first.",
+    "faq.title": "Help desk", "faq.intro": "The questions comms teams ask most often, answered from the official texts.",
+    "pass.kind": "BOARDING PASS · BUILT BY", "pass.f1": "PASSENGER", "pass.f2": "FROM", "pass.f3": "VIA", "pass.f4": "TO",
+    "pass.v2": "Comms & digital marketing", "pass.v3": "European governance", "pass.v4": "AI Act, Article 50", "pass.gate": "GATE",
+    "about.title": "Built by a communicator, for comms teams",
+    "about.h1": "Why this exists",
+    "about.p1": "I'm Amine Brahimi. I work in communications and digital marketing, in France, Belgium and Morocco, and I studied European governance at Sciences Po and UCLouvain. The AI Act's labelling rules sit right where those two meet, so I turned them into something a team can use in two minutes.",
+    "about.h2": "How it stays accurate",
+    "about.p2": "Each verdict points to the article it comes from. The logic follows the AI Act, the Commission's Article 50 guidelines and the Code of Practice published on 10 June 2026. Last checked on 17 October 2026.",
+    "about.cta": "See my portfolio",
+    "foot.sources": "Sources", "foot.s1": "AI Act, Article 50 (AI Act Service Desk)", "foot.s2": "Commission guidelines on Article 50",
+    "foot.s3": "Code of Practice on AI-generated content (10 June 2026)", "foot.s4": "Quick facts: transparency rules for AI systems",
+    "foot.s5": "AI Act, Article 99 (penalties)", "foot.page": "On this page", "foot.by": "Built by",
+    "foot.checked": "Checked against official texts on 17 October 2026",
+    "foot.legal": "© 2026 Amine Brahimi. A guide, not legal advice.", "foot.back": "Back to the check",
+    "v.todo": "What to do", "v.words": "Label to use", "v.wordsVol": "Optional label", "v.based": "Source",
+    "v.empty.title": "Your verdict prints here", "v.empty.why": "Answer the questions above. It takes under a minute.",
+    "copy": "Copy", "copied": "Copied", "copyFail": "Select and copy",
+    "lang.label": "Passer en français", "lang.btn": "FR",
+    "copyResult": "Copy my result", "copyResultHint": "Ready to paste into Slack, Teams or an email.",
+    "shareTail": "Checked with Etiq, a guide, not legal advice:"
+  },
+  fr: {
+    "nav.check": "Vérifier", "nav.counts": "Ce qui est concerné", "nav.wording": "Mentions", "nav.faq": "Aide",
+    "hero.title": "Faut-il une mention IA" + NB + "?",
+    "hero.lead": "Depuis le 2 août 2026, l'AI Act européen impose de signaler les deepfakes et certains textes générés par IA. Faites passer votre contenu par cinq questions au plus. Etiq imprime le verdict et la mention à copier.",
+    "hero.m1": "AI Act, article 50", "hero.m2": "Français et anglais", "hero.m3": "Gratuit, sans inscription",
+    "hero.hint": "L'étiquette se réimprime à chaque réponse. Faites-la tourner.",
+    "check.reset": "Nouveau trajet", "check.example": "Trajet d'exemple" + NB + ": une photo publicitaire où l'IA a modifié le visage d'un vrai mannequin",
+    "counts.title": "Ce qui est concerné", "counts.intro": "Cinq types de contenus, cinq règles. Chaque ligne indique l'article dont elle découle.",
+    "board.type": "CONTENU", "board.rule": "RÈGLE", "board.art": "SOURCE", "board.status": "STATUT",
+    "wording.title": "Des mentions prêtes à coller",
+    "wording.intro": "Des formulations courtes et simples, en français et en anglais. Choisissez celle qui correspond à ce qu'a fait l'IA et placez-la là où le public la verra en premier.",
+    "faq.title": "Aide", "faq.intro": "Les questions que posent le plus souvent les équipes com, avec des réponses tirées des textes officiels.",
+    "pass.kind": "CARTE D'EMBARQUEMENT · CONÇU PAR", "pass.f1": "PASSAGER", "pass.f2": "DE", "pass.f3": "VIA", "pass.f4": "VERS",
+    "pass.v2": "Communication et marketing digital", "pass.v3": "Gouvernance européenne", "pass.v4": "AI Act, article 50", "pass.gate": "PORTE",
+    "about.title": "Conçu par un communicant, pour les équipes com",
+    "about.h1": "Pourquoi cet outil",
+    "about.p1": "Je suis Amine Brahimi. Je travaille dans la communication et le marketing digital, en France, en Belgique et au Maroc, et j'ai étudié la gouvernance européenne à Sciences Po et à l'UCLouvain. Les règles d'étiquetage de l'AI Act se trouvent à la croisée des deux, alors j'en ai fait un outil qu'une équipe peut utiliser en deux minutes.",
+    "about.h2": "Comment il reste fiable",
+    "about.p2": "Chaque verdict renvoie à l'article dont il découle. La logique suit l'AI Act, les lignes directrices de la Commission sur l'article 50 et le code de bonnes pratiques publié le 10 juin 2026. Dernière vérification le 17 octobre 2026.",
+    "about.cta": "Voir mon portfolio",
+    "foot.sources": "Sources", "foot.s1": "AI Act, article 50 (AI Act Service Desk)", "foot.s2": "Lignes directrices de la Commission sur l'article 50",
+    "foot.s3": "Code de bonnes pratiques sur les contenus générés par IA (10 juin 2026)", "foot.s4": "L'essentiel sur les règles de transparence",
+    "foot.s5": "AI Act, article 99 (sanctions)", "foot.page": "Sur cette page", "foot.by": "Conçu par",
+    "foot.checked": "Vérifié par rapport aux textes officiels le 17 octobre 2026",
+    "foot.legal": "© 2026 Amine Brahimi. Un guide, pas un avis juridique.", "foot.back": "Retour à la vérification",
+    "v.todo": "Ce qu'il faut faire", "v.words": "Mention à utiliser", "v.wordsVol": "Mention facultative", "v.based": "Source",
+    "v.empty.title": "Votre verdict s'imprime ici", "v.empty.why": "Répondez aux questions ci-dessus. Cela prend moins d'une minute.",
+    "copy": "Copier", "copied": "Copié", "copyFail": "Sélectionnez et copiez",
+    "lang.label": "Switch to English", "lang.btn": "EN",
+    "copyResult": "Copier mon résultat", "copyResultHint": "Prêt à coller dans Slack, Teams ou un e-mail.",
+    "shareTail": "Vérifié avec Etiq, un guide, pas un avis juridique" + NB + ":"
+  }
+};
+T.en.fine = "Breaching Article 50 can cost up to €15 million or 3% of worldwide annual turnover, whichever is higher. For SMEs and start-ups, whichever is lower.";
+T.fr.fine = "Enfreindre l'article 50 peut coûter jusqu'à 15 millions d'euros ou 3" + NB + "% du chiffre d'affaires mondial annuel, le montant le plus élevé étant retenu. Pour les PME et les start-up, c'est le montant le plus bas.";
+
+var Q = {
+  where: { code: "ZONE", en: "Will people in the EU see it?", fr: "Sera-t-il vu par des personnes dans l'UE" + NB + "?", opts: [
+    { k: "eu", c: "EU", en: ["Yes, in the EU", "Includes campaigns run from outside the EU that reach people here"], fr: ["Oui, dans l'UE", "Y compris des campagnes lancées hors UE qui touchent un public européen"] },
+    { k: "out", c: "XEU", en: ["No, only outside the EU"], fr: ["Non, uniquement hors UE"] } ] },
+  type: { code: "TYPE", en: "What are you publishing?", fr: "Que publiez-vous" + NB + "?", opts: [
+    { k: "image", c: "IMG", en: ["Image", "Photo, visual, banner"], fr: ["Image", "Photo, visuel, bannière"] },
+    { k: "video", c: "VID", en: ["Video", "Ad, reel, corporate film"], fr: ["Vidéo", "Pub, reel, film corporate"] },
+    { k: "audio", c: "AUD", en: ["Audio", "Podcast, voice-over, radio spot"], fr: ["Audio", "Podcast, voix off, spot radio"] },
+    { k: "text", c: "TXT", en: ["Text", "Article, post, press release"], fr: ["Texte", "Article, post, communiqué"] },
+    { k: "chat", c: "BOT", en: ["Chatbot or assistant", "Talks with people directly"], fr: ["Chatbot ou assistant", "Échange directement avec le public"] } ] },
+  how: { code: "AI", en: "What did AI do?", fr: "Qu'a fait l'IA" + NB + "?", opts: [
+    { k: "full", c: "GEN", en: ["Created it from scratch"], fr: ["Elle l'a créé de A à Z"] },
+    { k: "mod", c: "MOD", en: ["Changed real material", "Swapped a face or voice, added or removed people or objects"], fr: ["Elle a modifié un contenu réel", "Visage ou voix remplacés, personnes ou objets ajoutés ou retirés"] },
+    { k: "light", c: "EDT", en: ["Only light edits", "Colour, crop, noise removal, upscaling"], fr: ["Seulement des retouches légères", "Couleurs, recadrage, débruitage, agrandissement"] } ] },
+  real: { code: "REAL", en: "Could someone take it for real?", fr: "Pourrait-on le prendre pour réel" + NB + "?", opts: [
+    { k: "yes", c: "REAL", en: ["Yes, it looks real", "Resembles real people, places, objects, products or events"], fr: ["Oui, il paraît réel", "Ressemble à des personnes, lieux, objets, produits ou événements réels"] },
+    { k: "no", c: "FICT", en: ["No, clearly not real", "Cartoon, obvious illustration, impossible scene"], fr: ["Non, clairement pas réel", "Dessin animé, illustration évidente, scène impossible"] } ] },
+  art: { code: "WORK", en: "Is it an evidently artistic, satirical or fictional work?", fr: "Est-ce manifestement une œuvre artistique, satirique ou de fiction" + NB + "?", opts: [
+    { k: "yes", c: "ART", en: ["Yes, evidently", "A short film, a parody, a clearly fictional story"], fr: ["Oui, manifestement", "Court métrage, parodie, histoire clairement fictive"] },
+    { k: "no", c: "AD", en: ["No", "Ads, product shots, corporate video, testimonials, news-style content"], fr: ["Non", "Publicités, photos produit, vidéo corporate, témoignages, contenus façon info"] } ] },
+  purpose: { code: "USE", en: "What is the text for?", fr: "À quoi sert ce texte" + NB + "?", opts: [
+    { k: "public", c: "PUB", en: ["Informing the public on a matter of public interest", "News, health, economy, public policy, elections"], fr: ["Informer le public sur un sujet d'intérêt public", "Actualité, santé, économie, politiques publiques, élections"] },
+    { k: "promo", c: "PRO", en: ["Promoting a product, service or brand", "Ads, product pages, social captions"], fr: ["Promouvoir un produit, un service ou une marque", "Publicités, fiches produit, légendes de posts"] },
+    { k: "internal", c: "INT", en: ["Internal or one-to-one", "Emails, memos, internal newsletters"], fr: ["Interne ou individuel", "E-mails, notes, newsletters internes"] } ] },
+  review: { code: "EDIT", en: "Did someone take editorial responsibility for it?", fr: "Quelqu'un en assume-t-il la responsabilité éditoriale" + NB + "?", opts: [
+    { k: "yes", c: "EDR", en: ["Yes, a named person reviewed and edited it"], fr: ["Oui, une personne identifiée l'a relu et corrigé"] },
+    { k: "no", c: "RAW", en: ["No, or only a quick look"], fr: ["Non, ou juste un coup d'œil"] } ] },
+  obvious: { code: "SEEN", en: "Is it obvious people are talking to an AI?", fr: "Est-il évident qu'on parle à une IA" + NB + "?", opts: [
+    { k: "no", c: "HUM", en: ["No, it could pass for a person", "Human name or photo, human tone, no notice"], fr: ["Non, il pourrait passer pour une personne", "Prénom ou photo humaine, ton humain, aucune mention"] },
+    { k: "yes", c: "OBV", en: ["Yes, it's obvious"], fr: ["Oui, c'est évident"] } ] }
+};
+
+var NEXT = {
+  where: function (a) { return a.where === "out" ? { r: "out" } : "type"; },
+  type: function (a) { return a.type === "text" ? "purpose" : a.type === "chat" ? "obvious" : "how"; },
+  how: function (a) { return a.how === "light" ? { r: "light" } : "real"; },
+  real: function (a) { return a.real === "no" ? { r: "notreal" } : "art"; },
+  art: function (a) { return a.art === "yes" ? { r: "art" } : { r: "deepfake" }; },
+  purpose: function (a) { return a.purpose === "public" ? "review" : { r: "textother" }; },
+  review: function (a) { return a.review === "yes" ? { r: "textreview" } : { r: "textlabel" }; },
+  obvious: function (a) { return a.obvious === "yes" ? { r: "chatobvious" } : { r: "chatlabel" }; }
+};
+
+var BADGE = {
+  en: { required: "Label required", light: "Lighter label", document: "Document it", none: "Not required", out: "Out of scope" },
+  fr: { required: "Mention obligatoire", light: "Mention allégée", document: "À documenter", none: "Non obligatoire", out: "Hors champ" }
+};
+var DEST = { required: "LBL", light: "LBL", document: "DOC", none: "CLR", out: "OUT" };
+
+var DEEPFAKE_TODO = {
+  image: {
+    en: ["Put the label or the EU icon on the image itself, not only in the caption", "Make it readable at the size people will see it, phones included", "Don't hide it in a footer, the alt text or the terms"],
+    fr: ["Placez la mention ou l'icône européenne sur l'image elle-même, pas seulement dans la légende", "Rendez-la lisible à la taille où elle sera vue, sur mobile aussi", "Ne la cachez pas dans un pied de page, le texte alternatif ou les CGU"] },
+  video: {
+    en: ["Show the label from the first frame and keep it on screen long enough to read", "Embed it in the video so it survives reposts", "A mention only in the description or the end credits is not enough"],
+    fr: ["Affichez la mention dès la première image, assez longtemps pour qu'on la lise", "Intégrez-la à la vidéo pour qu'elle reste lors des partages", "Une mention seulement dans la description ou le générique de fin ne suffit pas"] },
+  audio: {
+    en: ["Say it at the start: an audible disclaimer", "Repeat it in long formats, where listeners join midway", "Add it to the written description as well"],
+    fr: ["Annoncez-le au début, à l'oral", "Répétez-le dans les formats longs, où l'on arrive en cours de route", "Ajoutez-le aussi dans la description écrite"] }
+};
+
+var R = {
+  out: { sev: "out", ref: "Art. 2",
+    en: { t: "Probably outside the AI Act", w: "Article 50 covers content used in the EU. If none of your audience is in the EU, these labelling duties most likely don't apply. Local laws and platform rules still might.", d: ["Check the rules in the countries where you publish", "If the content could be reshared into the EU, label it anyway"] },
+    fr: { t: "Probablement hors du champ de l'AI Act", w: "L'article 50 vise les contenus utilisés dans l'UE. Si aucun de vos publics n'y est, ces obligations ne s'appliquent sans doute pas. Le droit local et les règles des plateformes peuvent encore s'appliquer.", d: ["Vérifiez les règles des pays où vous publiez", "Si le contenu peut être repartagé dans l'UE, étiquetez-le quand même"] } },
+  light: { sev: "none", ref: "Art. 50(4) · Commission guidelines",
+    en: { t: "No label required", w: "Light edits that don't change what the content shows don't turn it into a deepfake. The Commission's guidelines treat standard editing as outside the rule.", d: ["Keep a note of the tools you used, in case someone asks", "If an edit changes what viewers would believe happened, answer again with \"Changed real material\""] },
+    fr: { t: "Pas de mention obligatoire", w: "Des retouches légères qui ne changent pas ce que montre le contenu n'en font pas un deepfake. Les lignes directrices de la Commission excluent l'édition courante.", d: ["Notez les outils utilisés, au cas où on vous le demanderait", "Si une retouche change ce que le public croira s'être passé, répondez à nouveau avec «" + NB + "Elle a modifié un contenu réel" + NB + "»"] } },
+  notreal: { sev: "none", ref: "Art. 3(60)", vol: true,
+    en: { t: "No legal label required", w: "A deepfake is AI content that resembles real people, objects, places, entities or events and would falsely appear authentic. Something clearly fantastical isn't one.", d: ["A voluntary label still builds trust with your audience", "Check the platform's own AI disclosure setting when you post"] },
+    fr: { t: "Pas de mention légale obligatoire", w: "Un deepfake est un contenu généré par IA qui ressemble à des personnes, objets, lieux, entités ou événements réels et pourrait passer pour authentique. Un contenu clairement fantaisiste n'en est pas un.", d: ["Une mention volontaire renforce quand même la confiance", "Activez l'option de signalement IA de la plateforme au moment de publier"] } },
+  art: { sev: "light", ref: "Art. 50(4), 50(5)",
+    en: { t: "Label required, in a lighter form", w: "For an evidently artistic, creative, satirical or fictional work, you still disclose that AI was used, but in a way that doesn't spoil the work.", d: ["Disclose at the start: an opening card, a caption or a spoken line", "Keep it visible enough to notice, without covering the work", "End credits alone come too late: the rule is first exposure"] },
+    fr: { t: "Mention obligatoire, sous une forme allégée", w: "Pour une œuvre manifestement artistique, créative, satirique ou de fiction, vous signalez quand même l'usage de l'IA, mais sans gâcher l'œuvre.", d: ["Signalez-le dès le début" + NB + ": carton d'ouverture, légende ou mention orale", "Restez visible sans masquer l'œuvre", "Le générique de fin seul arrive trop tard" + NB + ": la règle vise la première exposition"] } },
+  deepfake: { sev: "required", ref: "Art. 50(4), 50(5) · Code of Practice", fine: true,
+    en: { t: "Label required", w: "Under the AI Act this is a deepfake: AI content that looks real and could be taken as authentic. Disclose it clearly, at the latest when people first see or hear it." },
+    fr: { t: "Mention obligatoire", w: "Au sens de l'AI Act, c'est un deepfake" + NB + ": un contenu IA qui paraît réel et pourrait passer pour authentique. Signalez-le clairement, au plus tard au premier contact avec le public." } },
+  textlabel: { sev: "required", ref: "Art. 50(4)", fine: true,
+    en: { t: "Label required", w: "AI-generated text published to inform the public on a matter of public interest must say so, unless a person reviewed it and someone holds editorial responsibility.", d: ["Put the mention at the top, next to the headline", "Or set up a real editorial review with a named editor, then answer again"] },
+    fr: { t: "Mention obligatoire", w: "Un texte généré par IA publié pour informer le public sur un sujet d'intérêt public doit le signaler, sauf s'il a été relu par une personne et qu'une personne ou une structure en assume la responsabilité éditoriale.", d: ["Placez la mention en haut, près du titre", "Ou mettez en place une vraie relecture éditoriale avec un responsable identifié, puis répondez à nouveau"] } },
+  textreview: { sev: "document", ref: "Art. 50(4) · Code of Practice",
+    en: { t: "No label, but document your review", w: "Text that a person reviewed in substance, with a person or organisation holding editorial responsibility, is exempt. The review has to be real, not a quick sign-off.", d: ["Name the person or team with editorial responsibility", "Write down how AI drafts get reviewed and approved", "You don't need a record of every single review, only of the process"] },
+    fr: { t: "Pas de mention, mais documentez la relecture", w: "Un texte relu sur le fond, avec une personne ou une structure qui en assume la responsabilité éditoriale, est exempté. La relecture doit être réelle, pas une simple validation.", d: ["Désignez la personne ou l'équipe responsable éditorialement", "Décrivez par écrit comment les brouillons IA sont relus et validés", "Inutile de tracer chaque relecture" + NB + ": c'est le processus qu'il faut documenter"] } },
+  textother: { sev: "none", ref: "Art. 50(4)",
+    en: { t: "No Article 50 label required", w: "The text rule covers publications meant to inform the public on matters of public interest. Ads, product copy and internal messages fall outside it.", d: ["If your copy also takes a position on a public-interest issue, answer again", "Other rules, such as those on misleading advertising, still apply"] },
+    fr: { t: "Pas de mention imposée par l'article 50", w: "La règle sur les textes vise les publications destinées à informer le public sur des sujets d'intérêt public. Publicités, textes produit et messages internes n'en relèvent pas.", d: ["Si votre texte prend aussi position sur un sujet d'intérêt public, répondez à nouveau", "D'autres règles, comme celles sur la publicité trompeuse, s'appliquent toujours"] } },
+  chatlabel: { sev: "required", ref: "Art. 50(1), 50(5)", fine: true,
+    en: { t: "Tell people it's an AI", w: "People must be told they're interacting with an AI system, unless it's obvious. The duty sits with the provider of the system, so check whether that's you or your vendor.", d: ["Show the notice in the first message, before people type", "Avoid human names and photos that suggest a person", "If a vendor supplies the tool, ask how they meet Article 50(1) and put it in the contract"] },
+    fr: { t: "Indiquez qu'il s'agit d'une IA", w: "Le public doit savoir qu'il échange avec un système d'IA, sauf si c'est évident. L'obligation pèse sur le fournisseur du système" + NB + ": vérifiez si c'est vous ou votre prestataire.", d: ["Affichez la mention dès le premier message, avant que l'on écrive", "Évitez les prénoms et photos qui laissent croire à une personne", "Si un prestataire fournit l'outil, demandez comment il respecte l'article 50, paragraphe 1, et inscrivez-le au contrat"] } },
+  chatobvious: { sev: "none", ref: "Art. 50(1)", vol: true,
+    en: { t: "No extra notice required", w: "When it's obvious to a reasonably well-informed person that they're talking to an AI, the rule doesn't ask for a separate notice.", d: ["A short line in the first message costs nothing and removes any doubt"] },
+    fr: { t: "Pas de mention supplémentaire obligatoire", w: "Quand il est évident, pour une personne raisonnablement informée, qu'elle parle à une IA, la règle n'exige pas de mention à part.", d: ["Une courte phrase dans le premier message ne coûte rien et lève tout doute"] } }
+};
+
+var W = {
+  img_full: ["AI-generated image", "Image générée par IA"],
+  img_mod: ["Image modified with AI", "Image modifiée par IA"],
+  img_art: ["Artwork created with AI", "Œuvre créée avec l'IA"],
+  vid_full: ["AI-generated video", "Vidéo générée par IA"],
+  vid_mod: ["This video contains scenes modified with AI", "Cette vidéo contient des scènes modifiées par IA"],
+  vid_art: ["Made with AI-generated imagery", "Réalisé avec des images générées par IA"],
+  aud_full: ["This audio was generated by AI.", "Ce contenu audio a été généré par IA."],
+  aud_mod: ["The voice you are hearing was created with AI.", "La voix que vous entendez a été créée par IA."],
+  aud_art: ["This piece uses AI-generated voices.", "Cette création utilise des voix générées par IA."],
+  vol: ["Made with AI", "Créé avec l'IA"],
+  txt: ["This text was generated with AI.", "Ce texte a été généré par IA."],
+  chat: ["You're chatting with an AI assistant.", "Vous échangez avec un assistant IA."]
+};
+function wordingFor(a, key) {
+  var p = { image: "img", video: "vid", audio: "aud" }[a.type];
+  if (key === "deepfake") return W[p + "_" + (a.how === "mod" ? "mod" : "full")];
+  if (key === "art") return W[p + "_art"];
+  if (key === "notreal") return W.vol;
+  if (key === "textlabel") return W.txt;
+  if (key === "chatlabel" || key === "chatobvious") return W.chat;
+  return null;
+}
+
+var BOARD = [
+  { code: "IMAGE", frcode: "IMAGE", art: "ART. 3(60)", st: "LABEL", frst: "MENTION", en: ["Looks real? It's a deepfake.", "AI content that resembles real people, objects, places, entities or events and would falsely appear authentic."], fr: ["Elle paraît réelle" + NB + "? C'est un deepfake.", "Contenu IA qui ressemble à des personnes, objets, lieux, entités ou événements réels et pourrait passer pour authentique."] },
+  { code: "VIDEO", frcode: "VIDEO", art: "ART. 50(5)", st: "LABEL", frst: "MENTION", en: ["Label from the first frame.", "The disclosure must be there at the latest at first exposure, so end credits come too late."], fr: ["Mention dès la première image.", "La mention doit apparaître au plus tard à la première exposition" + NB + ": le générique de fin arrive trop tard."] },
+  { code: "AUDIO", frcode: "AUDIO", art: "CODE 2026", st: "SPOKEN", frst: "ORAL", en: ["No screen, so say it.", "For audio-only content, the Code of Practice asks for an audible disclaimer, at the start."], fr: ["Pas d'écran, donc on le dit.", "Pour un contenu uniquement audio, le code de bonnes pratiques prévoit une mention sonore, dès le début."] },
+  { code: "TEXT", frcode: "TEXTE", art: "ART. 50(4)", st: "CHECK", frst: "VÉRIF", doc: true, en: ["Public interest, no editor.", "Only text that informs the public on matters of public interest, and only when no one took editorial responsibility."], fr: ["Intérêt public, sans éditeur.", "Seuls les textes qui informent le public sur des sujets d'intérêt public, et seulement si personne n'en assume la responsabilité éditoriale."] },
+  { code: "CHATBOT", frcode: "CHATBOT", art: "ART. 50(1)", st: "NOTICE", frst: "AVIS", en: ["Say it's an AI.", "People must be told they're talking to an AI system, unless it's obvious."], fr: ["Dites que c'est une IA.", "Le public doit savoir qu'il parle à un système d'IA, sauf si c'est évident."] }
+];
+
+var CATS = [
+  { en: "Images", fr: "Images", items: [
+    { w: "img_full", en: "Fully generated visuals that look real", fr: "Visuels entièrement générés qui paraissent réels" },
+    { w: "img_mod", en: "Real photos where AI changed what they show", fr: "Vraies photos dont l'IA a changé le contenu" },
+    { w: "img_art", en: "Evidently artistic or satirical pieces", fr: "Œuvres manifestement artistiques ou satiriques" },
+    { w: "vol", en: "Optional, for clearly unreal visuals", fr: "Facultatif, pour les visuels clairement irréels" } ] },
+  { en: "Video", fr: "Vidéo", items: [
+    { w: "vid_full", en: "On screen from the first frame", fr: "À l'écran dès la première image" },
+    { w: "vid_mod", en: "Face swaps, added people, altered scenes", fr: "Visages remplacés, personnes ajoutées, scènes modifiées" },
+    { w: "vid_art", en: "Opening card for a short film or parody", fr: "Carton d'ouverture pour un court métrage ou une parodie" } ] },
+  { en: "Audio", fr: "Audio", items: [
+    { w: "aud_full", en: "Read aloud at the start", fr: "À lire à voix haute au début" },
+    { w: "aud_mod", en: "Cloned or altered voices", fr: "Voix clonées ou modifiées" },
+    { w: "aud_art", en: "Fiction podcasts and sketches", fr: "Podcasts de fiction et sketches" } ] },
+  { en: "Text and chat", fr: "Texte et chat", items: [
+    { w: "txt", en: "Top of an unreviewed public-interest text", fr: "En tête d'un texte d'intérêt public non relu" },
+    { w: "chat", en: "First message of a chatbot", fr: "Premier message d'un chatbot" } ] }
+];
+
+var FAQ = [
+  { en: ["Do retouched photos need a label?", "Not for standard edits like colour, cropping or noise removal. Once AI changes what the picture shows (a face, an added person, a product that wasn't there) and the result looks real, it's a deepfake and needs a label."],
+    fr: ["Les photos retouchées doivent-elles être signalées" + NB + "?", "Pas pour les retouches courantes comme les couleurs, le recadrage ou le débruitage. Dès que l'IA change ce que montre l'image (un visage, une personne ajoutée, un produit absent) et que le résultat paraît réel, c'est un deepfake à signaler."] },
+  { en: ["We used AI for the first draft. Do we label the article?", "If a person reviewed and edited it in substance and someone holds editorial responsibility, public-interest text doesn't need a label. Keep a written description of how that review works."],
+    fr: ["L'IA a écrit le premier jet. Faut-il signaler l'article" + NB + "?", "Si une personne l'a relu et retravaillé sur le fond et que quelqu'un en assume la responsabilité éditoriale, un texte d'intérêt public n'a pas besoin de mention. Décrivez par écrit comment se passe cette relecture."] },
+  { en: ["Do we have to use the EU icon?", "No. The Commission offers three optional icons: one for fully AI-generated content, one for AI-modified content and a basic one with a second layer. Your own label works if it's as clear and as visible."],
+    fr: ["Faut-il utiliser l'icône européenne" + NB + "?", "Non. La Commission propose trois icônes facultatives" + NB + ": une pour les contenus entièrement générés, une pour les contenus modifiés par IA et une icône de base avec un second niveau d'information. Votre propre mention convient si elle est aussi claire et visible."] },
+  { en: ["What about content published before 2 August 2026?", "Deepfakes created before that date don't have to be labelled after the fact, though the Commission encourages it."],
+    fr: ["Et les contenus publiés avant le 2 août 2026" + NB + "?", "Les deepfakes créés avant cette date n'ont pas à être signalés a posteriori, même si la Commission l'encourage."] },
+  { en: ["Isn't watermarking the AI tool's job?", "The machine-readable marking is the provider's job under Article 50(2), with until December 2026 for tools already on the market. The visible label your audience sees is the deployer's job, which means yours."],
+    fr: ["Le marquage, ce n'est pas le rôle de l'outil IA" + NB + "?", "Le marquage lisible par machine incombe au fournisseur (article 50, paragraphe 2), avec un délai jusqu'en décembre 2026 pour les outils déjà sur le marché. La mention visible par votre public incombe au déployeur, c'est-à-dire à vous."] },
+  { en: ["Who checks, and what are the fines?", "National market surveillance authorities enforce the rules. Breaching Article 50 can cost up to €15 million or 3% of worldwide annual turnover, whichever is higher. For SMEs and start-ups it's whichever is lower."],
+    fr: ["Qui contrôle, et quelles sanctions" + NB + "?", "Les autorités nationales de surveillance du marché contrôlent l'application. Enfreindre l'article 50 peut coûter jusqu'à 15 millions d'euros ou 3" + NB + "% du chiffre d'affaires mondial annuel, le montant le plus élevé étant retenu. Pour les PME et les start-up, c'est le plus bas."] },
+  { en: ["Is this legal advice?", "No. It's a guide built on the AI Act text, the Commission's guidelines and the Code of Practice, checked on 17 October 2026. For a specific campaign, ask your legal team."],
+    fr: ["Est-ce un avis juridique" + NB + "?", "Non. C'est un guide fondé sur le texte de l'AI Act, les lignes directrices de la Commission et le code de bonnes pratiques, vérifié le 17 octobre 2026. Pour une campagne précise, consultez votre service juridique."] }
+];
+
+var REF_URL = "https://ai-act-service-desk.ec.europa.eu/en/ai-act/article-50";
+var SITE_URL = "https://aminebrr.github.io/etiq/";
+function resultText(key) {
+  var r = R[key], c = r[lang], d = routeData(), words = wordingFor(answers, key), L = T[lang];
+  var lines = [
+    "Etiq · " + BADGE[lang][r.sev].toUpperCase(),
+    c.t,
+    (lang === "fr" ? "Trajet" : "Route") + ": " + d.codes.join(" > "),
+    L["v.based"] + ": AI Act, " + r.ref
+  ];
+  if (words) lines.push((r.vol ? L["v.wordsVol"] : L["v.words"]) + ": \u201c" + words[lang === "fr" ? 1 : 0] + "\u201d / \u201c" + words[lang === "fr" ? 0 : 1] + "\u201d");
+  lines.push(L.shareTail + " " + SITE_URL);
+  return lines.join("\n");
+}
+var EXAMPLE = { where: "eu", type: "image", how: "mod", real: "yes", art: "no" };
+
+var lang = "en";
+try { var saved = localStorage.getItem("etiq-lang"); if (saved === "fr" || saved === "en") lang = saved; else if ((navigator.language || "").slice(0, 2) === "fr") lang = "fr"; } catch (e) { if ((navigator.language || "").slice(0, 2) === "fr") lang = "fr"; }
+var answers = Object.assign({}, EXAMPLE);
+var isExample = true;
+
+function walk(a) {
+  var path = [], node = "where", result = null;
+  while (node) {
+    path.push(node);
+    if (!a[node]) break;
+    var n = NEXT[node](a);
+    if (typeof n === "object") { result = n.r; break; }
+    node = n;
+  }
+  return { path: path, result: result };
+}
+function el(tag, attrs, kids) {
+  var e = document.createElement(tag);
+  if (attrs) for (var k in attrs) { if (k === "text") e.textContent = attrs[k]; else if (k === "class") e.className = attrs[k]; else e.setAttribute(k, attrs[k]); }
+  (kids || []).forEach(function (c) { if (c) e.appendChild(typeof c === "string" ? document.createTextNode(c) : c); });
+  return e;
+}
+function icon(id) {
+  var s = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  s.setAttribute("class", "icon"); s.setAttribute("aria-hidden", "true");
+  var u = document.createElementNS("http://www.w3.org/2000/svg", "use"); u.setAttribute("href", "#" + id); s.appendChild(u);
+  return s;
+}
+function copyBtn(text, label) {
+  var b = el("button", { class: "copy", type: "button" }, [icon("i-copy"), el("span", { text: label })]);
+  b.addEventListener("click", function () {
+    var span = b.querySelector("span"), old = span.textContent;
+    var done = function (ok) { span.textContent = ok ? T[lang].copied : T[lang].copyFail; b.classList.toggle("ok", ok); setTimeout(function () { span.textContent = old; b.classList.remove("ok"); }, 1400); };
+    try { navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); }); } catch (e) { done(false); }
+  });
+  return b;
+}
+
+function routeData() {
+  var w = walk(answers);
+  var codes = w.path.filter(function (k) { return answers[k]; }).map(function (k) {
+    return Q[k].opts.filter(function (x) { return x.k === answers[k]; })[0].c;
+  });
+  var r = w.result ? R[w.result] : null;
+  return { codes: codes, result: w.result, sev: r ? r.sev : null, badge: r ? BADGE[lang][r.sev] : "", dest: r ? DEST[r.sev] : "···",
+           words: w.result ? wordingFor(answers, w.result) : null, ref: r ? r.ref : "", lang: lang };
+}
+function updateRouteBar(d) {
+  var c = document.getElementById("rb-codes"); if (!c) return;
+  c.textContent = d.codes.length ? d.codes.join(" › ") : "···";
+  document.getElementById("rb-code").textContent = d.dest;
+  document.getElementById("rb-badge").textContent = d.badge;
+  document.getElementById("rb-dest").setAttribute("data-sev", d.sev || "out");
+}
+function announceRoute() { updateRouteBar(routeData()); window.__etiqRoute = routeData(); window.dispatchEvent(new CustomEvent("etiq-route", { detail: window.__etiqRoute })); }
+
+function renderQuestions(changedKey) {
+  var w = walk(answers);
+  var box = document.getElementById("questions");
+  var had = {}; box.querySelectorAll(".leg").forEach(function (n) { had[n.getAttribute("data-q")] = true; });
+  box.innerHTML = "";
+  w.path.forEach(function (key) {
+    var q = Q[key], hid = "q-" + key;
+    var opts = el("div", { class: "opts", role: "group", "aria-labelledby": hid });
+    q.opts.forEach(function (o) {
+      var b = el("button", { class: "opt notch", type: "button", "aria-pressed": answers[key] === o.k ? "true" : "false", id: "opt-" + key + "-" + o.k });
+      b.appendChild(el("span", { class: "opt-title", text: o[lang][0] }));
+      if (o[lang][1]) b.appendChild(el("span", { class: "opt-hint", text: o[lang][1] }));
+      b.addEventListener("click", function () { choose(key, o.k); });
+      opts.appendChild(b);
+    });
+    var picked = answers[key] ? q.opts.filter(function (x) { return x.k === answers[key]; })[0].c : q.code;
+    box.appendChild(el("div", { class: "leg" + (answers[key] ? " done" : "") + (changedKey && !had[key] ? " enter" : ""), "data-q": key }, [
+      el("span", { class: "leg-code", text: picked }), el("h3", { id: hid, text: q[lang] }), opts
+    ]));
+  });
+  document.getElementById("example-flag").textContent = isExample ? T[lang]["check.example"] : "";
+  renderResult(w.result, !!changedKey);
+  renderFallback();
+  announceRoute();
+}
+function choose(key, val) {
+  answers[key] = val; isExample = false;
+  var w = walk(answers);
+  Object.keys(answers).forEach(function (k) { if (w.path.indexOf(k) === -1) delete answers[k]; });
+  renderQuestions(key);
+  var btn = document.getElementById("opt-" + key + "-" + val); if (btn) btn.focus({ preventScroll: true });
+}
+
+function renderResult(key, animate) {
+  var box = document.getElementById("result"); box.innerHTML = ""; var L = T[lang];
+  if (!key) {
+    box.appendChild(el("div", { class: "verdict", "data-sev": "out" }, [
+      el("div", { class: "v-stripe" }, [el("span", { class: "v-badge", text: "···" })]),
+      el("div", { class: "v-body" }, [el("h3", { class: "v-title", text: L["v.empty.title"] }), el("p", { text: L["v.empty.why"] })])
+    ]));
+    return;
+  }
+  var r = R[key], c = r[lang];
+  var v = el("article", { class: "verdict" + (animate ? " print" : ""), "data-sev": r.sev });
+  v.appendChild(el("div", { class: "v-stripe" }, [el("span", { class: "v-badge", text: BADGE[lang][r.sev] }), el("span", { class: "data", text: DEST[r.sev] + " · " + r.ref })]));
+  var body = el("div", { class: "v-body" });
+  body.appendChild(el("h3", { class: "v-title", text: c.t }));
+  body.appendChild(el("p", { text: c.w }));
+  var cols = el("div", { class: "v-cols" });
+  var todo = c.d || (key === "deepfake" ? DEEPFAKE_TODO[answers.type][lang] : null);
+  if (todo) {
+    var ul = el("ul", { class: "v-list" });
+    todo.forEach(function (t) { ul.appendChild(el("li", {}, [icon("i-check"), el("span", { text: t })])); });
+    cols.appendChild(el("div", {}, [el("p", { class: "v-sub", text: L["v.todo"] }), ul]));
+  }
+  var words = wordingFor(answers, key);
+  if (words) {
+    var wb = el("div", {});
+    wb.appendChild(el("p", { class: "v-sub", text: r.vol ? L["v.wordsVol"] : L["v.words"] }));
+    (lang === "fr" ? [1, 0] : [0, 1]).forEach(function (i) {
+      wb.appendChild(el("div", { class: "word-row" }, [el("span", { class: "data", text: i ? "FR" : "EN" }), el("span", { class: "word-text", text: words[i] }), copyBtn(words[i], L.copy)]));
+    });
+    cols.appendChild(wb);
+  }
+  body.appendChild(cols);
+  var foot = el("div", { class: "v-foot" });
+  foot.appendChild(el("p", { class: "v-fine", text: r.fine ? L.fine : "" }));
+  var ref = el("p", { class: "v-ref" }, [L["v.based"] + ": "]);
+  ref.appendChild(el("a", { href: REF_URL, target: "_blank", rel: "noopener", text: "AI Act, " + r.ref }));
+  foot.appendChild(ref);
+  body.appendChild(foot);
+  body.appendChild(el("div", { class: "v-share" }, [copyBtn(resultText(key), L.copyResult), el("span", { class: "v-fine", text: L.copyResultHint })]));
+  v.appendChild(body);
+  box.appendChild(v);
+}
+function renderFallback() {
+  var d = routeData(), f = document.getElementById("stage-fallback"); f.innerHTML = "";
+  f.appendChild(el("span", { class: "data", text: "ETIQ" }));
+  f.appendChild(el("b", { class: "data", text: d.codes.join(" › ") }));
+  f.appendChild(el("span", { style: "font-family:var(--display);font-weight:800;font-stretch:125%;font-size:5rem;line-height:.9", text: d.dest }));
+  f.appendChild(el("span", { text: d.badge }));
+}
+
+function flapSpans(text) {
+  var wrap = el("span", { class: "flaps", "data-final": text, "aria-label": text.trim() });
+  for (var i = 0; i < text.length; i++) wrap.appendChild(el("span", { class: "flap", "aria-hidden": "true", text: text[i] === " " ? NB : text[i] }));
+  return wrap;
+}
+function renderBoard() {
+  var tb = document.getElementById("board-body"); tb.innerHTML = "";
+  BOARD.forEach(function (b) {
+    var code = lang === "fr" ? b.frcode : b.code, st = lang === "fr" ? b.frst : b.st;
+    tb.appendChild(el("tr", {}, [
+      el("td", {}, [flapSpans((code + "       ").slice(0, 7))]),
+      el("td", {}, [el("div", { class: "b-rule", text: b[lang][0] }), el("div", { class: "b-detail", text: b[lang][1] })]),
+      el("td", { class: "b-art", text: b.art }),
+      el("td", {}, [el("span", { class: "b-status" + (b.doc ? " doc" : "") }, [el("span", { class: "dot" }), st])])
+    ]));
+  });
+}
+var flapDone = false;
+function runFlaps() {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var A = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  document.querySelectorAll("#board-body .flaps").forEach(function (w, row) {
+    var final = w.getAttribute("data-final");
+    w.querySelectorAll(".flap").forEach(function (f, i) {
+      var n = 6 + row * 2 + i, t = 0;
+      var id = setInterval(function () {
+        t++;
+        if (t >= n) { f.textContent = final[i] === " " ? NB : final[i]; clearInterval(id); }
+        else f.textContent = A[(Math.random() * A.length) | 0];
+      }, 55);
+    });
+  });
+}
+
+function renderCats() {
+  var box = document.getElementById("cats"); box.innerHTML = ""; var L = T[lang];
+  CATS.forEach(function (cat) {
+    var grid = el("div", { class: "stickers" });
+    cat.items.forEach(function (it) {
+      var wd = W[it.w], main = lang === "fr" ? wd[1] : wd[0], other = lang === "fr" ? wd[0] : wd[1];
+      grid.appendChild(el("div", { class: "sticker" }, [
+        el("span", { class: "sticker-phrase", text: main }),
+        el("span", { class: "sticker-other", text: other }),
+        el("span", { class: "sticker-note" }, [icon("i-pin"), el("span", { text: it[lang] })]),
+        el("div", { class: "sticker-copy" }, [copyBtn(wd[0], L.copy + " EN"), copyBtn(wd[1], L.copy + " FR")])
+      ]));
+    });
+    box.appendChild(el("div", { class: "sheet-cat" }, [el("h3", {}, [cat[lang], el("span", { class: "count", text: "× " + cat.items.length })]), grid]));
+  });
+}
+function renderFaq() {
+  var box = document.getElementById("faq-list"), openIdx = -1;
+  box.querySelectorAll("details").forEach(function (d, i) { if (d.open) openIdx = i; });
+  box.innerHTML = "";
+  FAQ.forEach(function (f, i) {
+    var d = el("details", { name: "faq", class: "faq" }, [
+      el("summary", {}, [el("span", { text: f[lang][0] }), icon("i-plus")]),
+      el("div", { class: "faq-a" }, [el("p", { text: f[lang][1] })])
+    ]);
+    if (i === openIdx) d.open = true;
+    box.appendChild(d);
+  });
+}
+function applyLang() {
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-i18n]").forEach(function (n) { var v = T[lang][n.getAttribute("data-i18n")]; if (v) n.textContent = v; });
+  var lt = document.getElementById("lang-toggle"); lt.textContent = T[lang]["lang.btn"]; lt.setAttribute("aria-label", T[lang]["lang.label"]);
+  renderQuestions(); renderBoard(); renderCats(); renderFaq();
+  if (flapDone) runFlaps();
+}
+document.getElementById("lang-toggle").addEventListener("click", function () {
+  lang = lang === "en" ? "fr" : "en";
+  try { localStorage.setItem("etiq-lang", lang); } catch (e) {}
+  applyLang();
+});
+document.getElementById("reset").addEventListener("click", function () {
+  answers = {}; isExample = false; renderQuestions("reset");
+  var first = document.querySelector("#questions .opt"); if (first) first.focus();
+});
+
+if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      if (e.target.id === "counts") { if (!flapDone) { flapDone = true; runFlaps(); } }
+      else e.target.classList.add("in");
+      io.unobserve(e.target);
+    });
+  }, { rootMargin: "0px 0px -15% 0px" });
+  document.querySelectorAll(".reveal").forEach(function (n) { if (n.getBoundingClientRect().top > innerHeight) io.observe(n); });
+  io.observe(document.getElementById("counts"));
+}
+applyLang();
+
+(function () {
+  if (!("IntersectionObserver" in window)) return;
+  var bar = document.getElementById("routebar"), inRoute = false, inResult = false;
+  var sync = function () { bar.classList.toggle("show", inRoute && !inResult); };
+  new IntersectionObserver(function (e) { inRoute = e[0].isIntersecting; sync(); }).observe(document.getElementById("questions"));
+  new IntersectionObserver(function (e) { inResult = e[0].isIntersecting; sync(); }, { threshold: 0.15 }).observe(document.getElementById("result"));
+})();
+</script>
+
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }</script>
+<script type="module">
+import * as THREE from "three";
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const C = { ink: "#121314", sign: "#ffd21f", paper: "#f7f7f3", req: "#1849c6", doc: "#e8a200", clear: "#11804e", out: "#6f7377" };
+const SEV = { required: [C.req, "#fff"], light: [C.req, "#fff"], document: [C.doc, C.ink], none: [C.clear, "#fff"], out: [C.out, "#fff"] };
+
+function makeRenderer(host, opts = {}) {
+  const r = new THREE.WebGLRenderer(Object.assign({ antialias: true, alpha: true }, opts));
+  r.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+  r.outputColorSpace = THREE.SRGBColorSpace;
+  r.toneMapping = THREE.ACESFilmicToneMapping; r.toneMappingExposure = 1.0;
+  r.setClearColor(0x000000, 0);
+  if (host) host.appendChild(r.domElement);
+  return r;
+}
+function studio(scene) {
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x9a9890, 1.5));
+  const key = new THREE.DirectionalLight(0xffffff, 2.4); key.position.set(4, 6, 7); scene.add(key);
+  const fill = new THREE.DirectionalLight(0xfff1c2, 0.8); fill.position.set(-6, 1, 3); scene.add(fill);
+  const rim = new THREE.DirectionalLight(0xffffff, 1.1); rim.position.set(0, 3, -6); scene.add(rim);
+}
+function fit(r, cam, host, onAspect) {
+  const go = () => { const w = host.clientWidth, h = host.clientHeight; if (!w || !h) return; r.setSize(w, h, false); cam.aspect = w / h; if (onAspect) onAspect(cam.aspect); cam.updateProjectionMatrix(); };
+  new ResizeObserver(go).observe(host); go();
+}
+function watch(host) { const s = { on: true }; new IntersectionObserver((e) => { s.on = e[0].isIntersecting; }).observe(host); return s; }
+function roundRect(w, h, r) {
+  const s = new THREE.Shape(), x = -w / 2, y = -h / 2;
+  s.moveTo(x + r, y); s.lineTo(x + w - r, y); s.quadraticCurveTo(x + w, y, x + w, y + r); s.lineTo(x + w, y + h - r); s.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  s.lineTo(x + r, y + h); s.quadraticCurveTo(x, y + h, x, y + h - r); s.lineTo(x, y + r); s.quadraticCurveTo(x, y, x + r, y);
+  return s;
+}
+
+/* ----- 3D logo: a luggage ID tag on a strap, yellow card printed with "e" ----- */
+function buildLogo() {
+  const g = new THREE.Group();
+  const sy = 0.6, sw = 0.46, sh = 0.13;
+  const body = roundRect(1.2, 1.7, 0.24);
+  const slot = new THREE.Path();
+  slot.moveTo(-sw / 2 + sh / 2, sy - sh / 2); slot.lineTo(sw / 2 - sh / 2, sy - sh / 2);
+  slot.absarc(sw / 2 - sh / 2, sy, sh / 2, -Math.PI / 2, Math.PI / 2, false);
+  slot.lineTo(-sw / 2 + sh / 2, sy + sh / 2);
+  slot.absarc(-sw / 2 + sh / 2, sy, sh / 2, Math.PI / 2, Math.PI * 1.5, false);
+  body.holes.push(slot);
+  const geo = new THREE.ExtrudeGeometry(body, { depth: 0.14, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.05, bevelSegments: 4, curveSegments: 24 });
+  geo.translate(0, 0, -0.07);
+  const leather = new THREE.MeshStandardMaterial({ color: C.ink, roughness: 0.42, metalness: 0.1 });
+  g.add(new THREE.Mesh(geo, leather));
+  const cv = document.createElement("canvas"); cv.width = 256; cv.height = 300; const x = cv.getContext("2d");
+  x.fillStyle = C.sign; x.fillRect(0, 0, 256, 300);
+  x.fillStyle = C.ink; x.textAlign = "center"; x.font = '800 240px "Archivo", Arial, sans-serif'; x.fillText("e", 128, 210);
+  x.fillRect(44, 250, 168, 16);
+  const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace;
+  const cardM = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.55 });
+  const card = new THREE.Mesh(new THREE.PlaneGeometry(0.86, 1.0), cardM); card.position.set(0, -0.2, 0.126); g.add(card);
+  const back = new THREE.Mesh(new THREE.PlaneGeometry(0.86, 1.0), cardM); back.rotation.y = Math.PI; back.position.set(0, -0.2, -0.126); g.add(back);
+  const strapWrap = new THREE.Group(); strapWrap.position.set(0, sy + 0.3, 0); strapWrap.rotation.y = Math.PI / 2;
+  const strap = new THREE.Mesh(new THREE.TorusGeometry(0.34, 0.055, 16, 60, Math.PI * 1.32), leather); strap.rotation.z = -Math.PI * 0.16; strapWrap.add(strap);
+  g.add(strapWrap);
+  const buckle = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.08, 0.2), new THREE.MeshStandardMaterial({ color: 0xc9c6bc, metalness: 0.9, roughness: 0.25 }));
+  buckle.position.set(0, sy + 0.64, 0); g.add(buckle);
+  return g;
+}
+
+/* ----- hero: a thermal bag-tag strip looped around a suitcase handle ----- */
+const STRIP_W = 1.55, R_LOOP = 0.36, BACK = 0.5, DROP = 3.9;
+function stripGeometry() {
+  const pts = [], nB = 10, nA = 44, nD = 110;
+  for (let i = 0; i <= nB; i++) pts.push([-BACK + BACK * (i / nB), -R_LOOP]);
+  for (let i = 1; i <= nA; i++) { const th = Math.PI - Math.PI * (i / nA); pts.push([R_LOOP * Math.sin(th), R_LOOP * Math.cos(th)]); }
+  for (let i = 1; i <= nD; i++) pts.push([-DROP * (i / nD), R_LOOP]);
+  let len = 0; const s = [0];
+  for (let i = 1; i < pts.length; i++) { len += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); s.push(len); }
+  const pos = [], uv = [], idx = [];
+  pts.forEach((p, i) => { pos.push(-STRIP_W / 2, p[0], p[1], STRIP_W / 2, p[0], p[1]); uv.push(0, 1 - s[i] / len, 1, 1 - s[i] / len); });
+  for (let i = 0; i < pts.length - 1; i++) { const a = i * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2));
+  g.setIndex(idx); g.computeVertexNormals();
+  return { geo: g, len, printStart: s[nB + nA] / len };
+}
+
+const PRINT_W = 640;
+function drawTag(ctx, H, startPx, d, reveal) {
+  const W = PRINT_W, pad = 46, ink = C.ink;
+  ctx.fillStyle = C.paper; ctx.fillRect(0, 0, W, H);
+  ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, startPx + (H - startPx) * reveal); ctx.clip();
+  ctx.fillStyle = ink; ctx.textBaseline = "alphabetic";
+  let y = startPx + 92;
+  ctx.textAlign = "left"; ctx.font = '800 72px "Archivo", Arial'; ctx.fillText("Etiq", pad, y);
+  ctx.textAlign = "right"; ctx.font = '500 22px "Martian Mono", monospace'; ctx.fillText("AI ACT · ART. 50", W - pad, y - 8);
+  y += 28; ctx.fillRect(pad, y, W - pad * 2, 7);
+  y += 62; ctx.textAlign = "left"; ctx.font = '500 22px "Martian Mono", monospace'; ctx.fillText("DESTINATION", pad, y);
+  y += 178; ctx.font = '800 214px "Archivo", Arial'; ctx.fillText(d.dest, pad - 10, y);
+  y += 64; ctx.font = '500 22px "Martian Mono", monospace'; ctx.fillText(d.lang === "fr" ? "TRAJET" : "ROUTE", pad, y);
+  y += 54; ctx.font = '700 44px "Archivo", Arial';
+  let x = pad; const codes = d.codes.length ? d.codes : ["···"];
+  codes.forEach((c, i) => {
+    const w = ctx.measureText(c).width;
+    if (x + w > W - pad) { x = pad; y += 56; }
+    ctx.fillText(c, x, y); x += w;
+    if (i < codes.length - 1) { const ar = " › "; ctx.fillText(ar, x, y); x += ctx.measureText(ar).width; }
+  });
+  y += 44;
+  const [bg, fg] = d.sev ? SEV[d.sev] : [C.out, "#fff"];
+  ctx.fillStyle = bg; ctx.fillRect(0, y, W, 128);
+  if (d.sev === "light") { ctx.fillStyle = "rgba(255,255,255,.18)"; for (let k = -140; k < W; k += 40) { ctx.beginPath(); ctx.moveTo(k, y + 128); ctx.lineTo(k + 20, y + 128); ctx.lineTo(k + 148, y); ctx.lineTo(k + 128, y); ctx.fill(); } }
+  ctx.fillStyle = fg; ctx.textAlign = "center"; ctx.font = '800 48px "Archivo", Arial';
+  ctx.fillText((d.badge || "···").toUpperCase(), W / 2, y + 82);
+  y += 128 + 76; ctx.fillStyle = ink; ctx.textAlign = "left";
+  if (d.words) {
+    ctx.font = '600 38px "Archivo", Arial';
+    const parts = ("“" + d.words[d.lang === "fr" ? 1 : 0] + "”").split(" "); let line = "";
+    parts.forEach((w) => { const t = line ? line + " " + w : w; if (ctx.measureText(t).width > W - pad * 2) { ctx.fillText(line, pad, y); line = w; y += 48; } else line = t; });
+    ctx.fillText(line, pad, y); y += 58;
+  }
+  ctx.font = '500 22px "Martian Mono", monospace';
+  if (d.ref) { const refs = ("AI ACT " + d.ref.replace("Code of Practice", "CODE 2026").replace("Commission guidelines", "GUIDELINES").toUpperCase()).split(" · "); refs.forEach((r, i) => { ctx.fillText(r, pad, y); if (i < refs.length - 1) y += 32; }); }
+  y += 26; ctx.font = '104px "Libre Barcode 128 Text"'; ctx.fillText("ETQ" + (d.codes.join("").slice(0, 8) || "050"), pad - 8, y + 104);
+  y += 170; ctx.font = '500 22px "Martian Mono", monospace'; ctx.fillText("17 OCT 2026", pad, y); ctx.textAlign = "right"; ctx.fillText("ETQ 050 1726", W - pad, y);
+  ctx.restore();
+}
+
+async function boot() {
+  try {
+    await Promise.race([Promise.all([
+      document.fonts.load('800 64px "Archivo"'), document.fonts.load('600 34px "Archivo"'), document.fonts.load('700 44px "Archivo"'),
+      document.fonts.load('500 22px "Martian Mono"'), document.fonts.load('96px "Libre Barcode 128 Text"')
+    ]), new Promise((r) => setTimeout(r, 2500))]);
+  } catch (e) {}
+
+  /* logo in the sign strip, plus a favicon rendered from the same model */
+  const logoHost = document.getElementById("logo3d");
+  const lr = makeRenderer(logoHost);
+  const ls = new THREE.Scene(); studio(ls);
+  const lc = new THREE.PerspectiveCamera(30, 1, 0.1, 50); lc.position.set(0, 0.2, 5.2); lc.lookAt(0, 0.12, 0);
+  const logo = buildLogo(); ls.add(logo); logo.rotation.set(0.1, -0.45, 0.05);
+  fit(lr, lc, logoHost); lr.render(ls, lc);
+  try {
+    const fav = document.createElement("canvas"); fav.width = fav.height = 64;
+    const fr = new THREE.WebGLRenderer({ antialias: true, alpha: true, canvas: fav, preserveDrawingBuffer: true });
+    fr.outputColorSpace = THREE.SRGBColorSpace; fr.toneMapping = THREE.ACESFilmicToneMapping; fr.setClearColor(0, 0); fr.setSize(64, 64, false);
+    const fc = new THREE.PerspectiveCamera(30, 1, 0.1, 50); fc.position.set(0, 0.2, 4.7); fc.lookAt(0, 0.12, 0);
+    fr.render(ls, fc);
+    document.getElementById("favicon").href = fav.toDataURL("image/png");
+    fr.dispose();
+  } catch (e) {}
+
+  /* hero tag */
+  const host = document.getElementById("tag-canvas");
+  const hr = makeRenderer(host);
+  const hs = new THREE.Scene(); studio(hs);
+  const hc = new THREE.PerspectiveCamera(26, 1, 0.1, 100); hc.position.set(0.8, -0.6, 12.5); hc.lookAt(0, -1.55, 0);
+  fit(hr, hc, host, (a) => { const z = a > 0.8 ? 9.6 : 12.5; hc.position.set(0.8, -0.6, z); hc.lookAt(0, a > 0.8 ? -1.35 : -1.55, 0); });
+  const rig = new THREE.Group(); hs.add(rig);
+  const handleM = new THREE.MeshStandardMaterial({ color: C.ink, roughness: 0.36, metalness: 0.1 });
+  const metal = new THREE.MeshStandardMaterial({ color: 0xc8c5bb, metalness: 0.95, roughness: 0.22 });
+  const grip = new THREE.Mesh(new THREE.CapsuleGeometry(0.21, 2.5, 8, 28), handleM); grip.rotation.z = Math.PI / 2; rig.add(grip);
+  [-1.5, 1.5].forEach((x) => {
+    const post = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.13, 2.4, 28), handleM); post.position.set(x, 1.15, 0); rig.add(post);
+    const ring = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.1, 28), metal); ring.position.set(x, 0.0, 0); rig.add(ring);
+  });
+  const strip = stripGeometry();
+  const H = Math.round(PRINT_W * strip.len / STRIP_W), startPx = Math.round(H * strip.printStart);
+  const cv = document.createElement("canvas"); cv.width = PRINT_W; cv.height = H;
+  const ctx = cv.getContext("2d");
+  const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = hr.capabilities.getMaxAnisotropy();
+  const tagMesh = new THREE.Mesh(strip.geo, new THREE.MeshStandardMaterial({ map: tex, roughness: 0.5, side: THREE.DoubleSide }));
+  const tag = new THREE.Group(); tag.add(tagMesh); rig.add(tag);
+
+  let route = window.__etiqRoute, reveal = 1, printing = false, kick = 0;
+  const paint = () => { if (route) { drawTag(ctx, H, startPx, route, reveal); tex.needsUpdate = true; } };
+  paint();
+  addEventListener("etiq-route", (e) => { route = e.detail; reveal = reduce ? 1 : 0; printing = !reduce; kick = 1; paint(); });
+
+  let spin = -0.3, vel = 0, drag = false, lastX = 0, px = 0;
+  const cnv = hr.domElement;
+  cnv.addEventListener("pointerdown", (e) => { drag = true; lastX = e.clientX; cnv.setPointerCapture(e.pointerId); });
+  cnv.addEventListener("pointermove", (e) => { const b = cnv.getBoundingClientRect(); px = (e.clientX - b.left) / b.width - 0.5; if (drag) { const dx = e.clientX - lastX; lastX = e.clientX; spin += dx * 0.01; vel = dx * 0.0012; } });
+  const up = () => { drag = false; }; cnv.addEventListener("pointerup", up); cnv.addEventListener("pointercancel", up);
+  cnv.addEventListener("pointerleave", () => { px = 0; });
+  const heroOn = watch(host), logoOn = watch(logoHost);
+
+  document.documentElement.classList.add("has-3d");
+  const clock = new THREE.Clock();
+  (function frame() {
+    const dt = Math.min(clock.getDelta(), 0.05), t = clock.elapsedTime;
+    if (heroOn.on) {
+      if (printing) { reveal = Math.min(1, reveal + dt / 0.75); paint(); if (reveal >= 1) printing = false; }
+      if (!drag) { vel *= 0.93; spin += vel; spin += (-0.3 + px * 0.6 - spin) * 0.025; }
+      kick *= 0.95;
+      tag.rotation.x = reduce ? 0 : Math.sin(t * 1.05) * 0.035 + Math.sin(t * 6.5) * kick * 0.09;
+      rig.rotation.y = spin;
+      hr.render(hs, hc);
+    }
+    if (logoOn.on && !reduce) { logo.rotation.y = -0.45 + Math.sin(t * 0.8) * 0.85; logo.rotation.z = Math.sin(t * 1.3) * 0.06; lr.render(ls, lc); }
+    requestAnimationFrame(frame);
+  })();
+}
+try { const tc = document.createElement("canvas"); if (tc.getContext("webgl2") || tc.getContext("webgl")) boot().catch((e) => console.warn("3D off", e)); } catch (e) {}
+</script>
+</body></html>
