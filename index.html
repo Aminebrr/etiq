@@ -10,7 +10,7 @@
 <meta property="og:title" content="Etiq: does your content need an AI label?">
 <meta property="og:description" content="Five questions or fewer, a verdict under EU AI Act Article 50, and label wording to paste in English and French. Built by Amine Brahimi.">
 <meta property="og:url" content="https://aminebrr.github.io/etiq/">
-<meta property="og:image" content="https://aminebrr.github.io/etiq/og-image.png">
+<meta property="og:image" content="https://aminebrr.github.io/etiq/etiq.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="627">
 <meta property="og:image:alt" content="A thermal baggage tag printed with LBL and Label required, next to the question Does it need an AI label?">
@@ -19,7 +19,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Etiq: does your content need an AI label?">
 <meta name="twitter:description" content="A verdict under EU AI Act Article 50 and label wording in English and French.">
-<meta name="twitter:image" content="https://aminebrr.github.io/etiq/og-image.png">
+<meta name="twitter:image" content="https://aminebrr.github.io/etiq/etiq.jpg">
 <link rel="icon" id="favicon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='14' y='8' width='36' height='50' rx='7' fill='%23121314'/%3E%3Crect x='20' y='22' width='24' height='28' rx='3' fill='%23ffd21f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -209,7 +209,8 @@ button { font: inherit; color: inherit; }
   .stage { order: 2; position: relative; top: 0; height: 100vw; min-height: 0; max-height: 620px; }
   .stage-note { bottom: 4px; }
   .hall-route { order: 3; }
-  .stage { order: 4; margin-top: 32px; }
+  .stage { order: 4; margin-top: 32px; height: calc(100vw + 48px); }
+  .stage-canvas { bottom: 48px; }
   .hero-title { font-size: clamp(2.375rem, 10.5vw, 3.25rem); }
   .hero-lead { font-size: 1.0625rem; margin-top: 14px; }
   .hero-meta { display: none; }
@@ -262,6 +263,17 @@ button { font: inherit; color: inherit; }
 .b-status { display: inline-flex; align-items: center; gap: 8px; font-family: var(--display); font-weight: 800; font-stretch: 118%; font-size: 0.9375rem; letter-spacing: 0.02em; white-space: nowrap; padding: 7px 12px; border-radius: 6px; background: var(--req); color: var(--req-ink); }
 .b-status.doc { background: var(--doc); color: var(--doc-ink); }
 .b-status .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: blink 1.4s steps(2, start) infinite; }
+
+@media (max-width: 700px) {
+  .board table { min-width: 0; border-spacing: 0; }
+  .board thead { display: none; }
+  .board table, .board tbody, .board tr, .board td { display: block; }
+  .board tr { background: var(--board-2); border-radius: 8px; padding: 18px 16px; margin-bottom: 8px; }
+  .board td { background: none !important; padding: 0; border-radius: 0 !important; }
+  .board td + td { margin-top: 14px; }
+  .board td.b-art, .board td:last-child { display: inline-flex; align-items: center; vertical-align: middle; }
+  .board td.b-art { margin-right: 14px; }
+}
 
 /* ---------- sticker sheet ---------- */
 .sheet-sec { padding-top: var(--gap-section); }
@@ -872,11 +884,16 @@ function renderQuestions(changedKey) {
   announceRoute();
 }
 function choose(key, val) {
+  var hadResult = !!walk(answers).result;
   answers[key] = val; isExample = false;
   var w = walk(answers);
   Object.keys(answers).forEach(function (k) { if (w.path.indexOf(k) === -1) delete answers[k]; });
   renderQuestions(key);
   var btn = document.getElementById("opt-" + key + "-" + val); if (btn) btn.focus({ preventScroll: true });
+  if (w.result && !hadResult && matchMedia("(max-width: 900px)").matches) {
+    var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setTimeout(function () { document.getElementById("result").scrollIntoView({ behavior: still ? "auto" : "smooth", block: "start" }); }, 120);
+  }
 }
 
 function renderResult(key, animate) {
